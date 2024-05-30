@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from 'antd';
-import Telefon from './Telefon'
+import Telefon from './models/TelefonAndroid';
 
 const { Meta } = Card;
 
@@ -19,6 +19,9 @@ const TelefonCard: React.FC<TelefonCardProps> = ({ telefon }) => (
     <div>
       <p>Model: {telefon.model}</p>
       <p>Price: {telefon.pret}</p>
+      <p>Veriune android: {telefon.versiune}</p>
+      <p>Specificatii: {telefon.specificatii}</p>
+      <p>Relizul: {telefon.relizul}</p>
     </div>
   </Card>
 );

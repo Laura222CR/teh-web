@@ -8,7 +8,7 @@ import {
     Modal,
 
   } from 'antd';
-import Telefon from './Telefon';
+import Telefon from './models/TelefonAndroid';
 
 const formItemLayout = {
     labelCol: {
@@ -41,7 +41,10 @@ const FormaAdaugare: React.FC<ModalFormProps> = ({ visible, onCancel ,onSubmit, 
       model : values.model,
       imagine : values.imagine,
       pret : values.pret,
-      descriere : values.descriere    }
+      descriere : values.descriere ,
+      versiune: values.versiune,
+      specificatii : values.specificatii,
+      relizul:values.relizul   }
     console.log("OnFinishMethod values")
     console.log(values);
     alert("Of course you want to add the product with the name: "+values.nume+" ?");
@@ -81,6 +84,21 @@ const FormaAdaugare: React.FC<ModalFormProps> = ({ visible, onCancel ,onSubmit, 
           <Form.Item label="Pret" name="pret" rules={[{ required: true, message: 'Introduceti pretul telefonului!' }]}>            
            <InputNumber />
            </Form.Item>
+
+           <Form.Item label="Specificatii" name="specificatii" rules={[{ required: true, message: 'Introduceti specificatiile telefonului!' }]}>
+           <Input />
+          </Form.Item>
+
+
+
+         <Form.Item label="Versiune android" name="versiune" rules={[{ required: true, message: 'Introduceti versiunea android a  telefonului!' }]}>
+            <Input.TextArea />
+          </Form.Item>
+
+          <Form.Item label="Relizul" name="relizul" rules={[{ required: true, message: 'Introduceti relizul telefonului!' }]}>            
+           <InputNumber />
+           </Form.Item>
+
 
 
       
