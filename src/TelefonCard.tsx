@@ -1,19 +1,26 @@
 import React from 'react';
-import { Card } from 'antd';
+import { Button, Card } from 'antd';
 import Telefon from './models/TelefonAndroid';
+import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const { Meta } = Card;
 
 
 interface TelefonCardProps {
   telefon: Telefon;
+  onEdit: () => void; 
+  onDelete: () => void; 
 }
 
-const TelefonCard: React.FC<TelefonCardProps> = ({ telefon }) => (
+const TelefonCard: React.FC<TelefonCardProps> = ({ telefon, onEdit, onDelete  }) => (
   <Card
     hoverable
     style={{ width: 250 }}
     cover={<img alt={telefon.nume} src={telefon.imagine} />}
+    actions={[ 
+      <Button type="primary" icon={<EditOutlined />} onClick={onEdit}>Edit</Button>,
+      <Button style={{ backgroundColor: '#ff4d4f', borderColor: '#ff4d4f' }} icon={<DeleteOutlined />} onClick={onDelete}>Delete</Button>
+    ]}
   >
     <Meta title={telefon.nume} description={telefon.descriere} />
     <div>
