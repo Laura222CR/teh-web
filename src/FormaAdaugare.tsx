@@ -1,116 +1,88 @@
-import React, { useEffect } from 'react';
-
-import {
-    Button,
-    Form,
-    Input,
-    InputNumber,
-    Modal,
-
-  } from 'antd';
+import React from 'react';
+import { observer } from 'mobx-react';
+import { Form, Input, Modal, Button, InputNumber } from 'antd';
 import Telefon from './models/TelefonAndroid';
 
-const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 6 },
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 14 },
-    },
-  };
-  
-
+const { TextArea } = Input;
 
 interface ModalFormProps {
   visible: boolean;
-  onSubmit: (data: Telefon) => void;
-  onCancel:() => void;
-  card : Telefon;
+  onCancel: () => void;
+  onSubmit: (product: Telefon) => void;
+  card: Telefon; 
 }
 
-const FormaAdaugare: React.FC<ModalFormProps> = ({ visible, onCancel ,onSubmit, card }) => {
-  const [form] = Form.useForm();
+const FormaAdaugare: React.FC<ModalFormProps> = ({ visible, onCancel, onSubmit, card }) => {
+  const [form] = Form.useForm(); 
 
- 
+  React.useEffect(() => {
+    form.setFieldsValue(card);
+  }, [card, form]);
 
-  const onFinish = (values: any) => {
-    const Telefon = {
-      nume : values.nume,
-      model : values.model,
-      imagine : values.imagine,
-      pret : values.pret,
-      descriere : values.descriere ,
-      versiune: values.versiune,
-      specificatii : values.specificatii,
-      relizul:values.relizul   }
-    console.log("OnFinishMethod values")
-    console.log(values);
-    alert("Of course you want to add the product with the name: "+values.nume+" ?");
-    onSubmit(Telefon); 
-    form.resetFields();
+  const handleOk = () => {
+    form
+      .validateFields()
+      .then(values => {
+        onSubmit(values);
+        form.resetFields();
+      })
+      .catch(info => {
+        console.log('Validate Failed:', info);
+      });
   };
-  
-  
-  useEffect(() =>{
-    form.resetFields();
-  },[onCancel])
-
-
 
   return (
-    <Modal title="Adaugare telefon" open={visible} onCancel={onCancel} footer={null}>
-        <Form form={form} {...formItemLayout} onFinish={onFinish} initialValues={{}}>
- 
-
-          <Form.Item label="Nume" name="nume" rules={[{ required: true, message: 'Introduceti numele telefonului!' }]}>
-           <Input />
-          </Form.Item>
+    <Modal
+      title={card.nume ? 'Edit Product' : 'Add Product'} 
+      visible={visible}
+      onCancel={onCancel}
+      footer={[
+        <Button key="back" onClick={onCancel}>
+          Cancel
+        </Button>,
+        <Button key="submit" type="primary" onClick={handleOk}>
+          Submit
+        </Button>,
+      ]}
+    >
+      <Form form={form} layout="vertical" name="modal_form">
+      <Form.Item label="Nume" name="nume" rules={[{ required: true, message: 'Introduceti numele telefonului!' }]}>
+            <Input />
+           </Form.Item>
 
           <Form.Item label="Model" name="model" rules={[{ required: true, message: 'Introduceti modelul telefonului!' }]}>
-           <Input />
-          </Form.Item>
-          <Form.Item label="Imagine" name="imagine" rules={[{ required: true, message: 'Introduceti imaginea telefonului!' }]}>
-           <Input />
-          </Form.Item>
-
-
-
-         <Form.Item label="Descriere" name="descriere" rules={[{ required: true, message: 'Introduceti descrierea telefonului!' }]}>
-            <Input.TextArea />
-          </Form.Item>
-
-          <Form.Item label="Pret" name="pret" rules={[{ required: true, message: 'Introduceti pretul telefonului!' }]}>            
-           <InputNumber />
+            <Input />
            </Form.Item>
-
-           <Form.Item label="Specificatii" name="specificatii" rules={[{ required: true, message: 'Introduceti specificatiile telefonului!' }]}>
-           <Input />
-          </Form.Item>
-
-
-
-         <Form.Item label="Versiune android" name="versiune" rules={[{ required: true, message: 'Introduceti versiunea android a  telefonului!' }]}>
-            <Input.TextArea />
-          </Form.Item>
-
-          <Form.Item label="Relizul" name="relizul" rules={[{ required: true, message: 'Introduceti relizul telefonului!' }]}>            
-           <InputNumber />
+         <Form.Item label="Imagine" name="imagine" rules={[{ required: true, message: 'Introduceti imaginea telefonului!' }]}>
+          <Input />
            </Form.Item>
 
 
 
-      
-
-          <Form.Item wrapperCol={{ offset: 6, span: 16 }}>
-             <Button type="primary" htmlType="submit">
-               Submit
-             </Button>
+          <Form.Item label="Descriere" name="descriere" rules={[{ required: true, message: 'Introduceti descrierea telefonului!' }]}>
+             <Input.TextArea />
            </Form.Item>
-         </Form>
-       </Modal>
+           <Form.Item label="Pret" name="pret" rules={[{ required: true, message: 'Introduceti pretul telefonului!' }]}>            
+            <InputNumber />
+            </Form.Item>
+
+            <Form.Item label="Specificatii" name="specificatii" rules={[{ required: true, message: 'Introduceti specificatiile telefonului!' }]}>
+          <Input />
+          </Form.Item>
+
+
+
+          <Form.Item label="Versiune android" name="versiune" rules={[{ required: true, message: 'Introduceti versiunea android a  telefonului!' }]}>
+             <Input.TextArea />
+           </Form.Item>
+
+           <Form.Item label="Relizul" name="relizul" rules={[{ required: true, message: 'Introduceti relizul telefonului!' }]}>            
+            <InputNumber />
+            </Form.Item>
+      </Form>
+    </Modal>
   );
 };
 
-export default FormaAdaugare;
+export default observer(FormaAdaugare);
+
